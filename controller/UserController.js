@@ -76,10 +76,36 @@ export const getAllJamaah = async(req,res)=>{
             res.status(200).json({
                 data : response
             })
+        }).catch(()=>{
+            res.status(404).json({
+                message : "error"
+            })
         })
     } catch (err) {
         res.status(404).json({
             message : "error"
+        })
+    }
+}
+
+export const getJamaahAgen = async(req,res)=>{
+    try {
+        await Jamaah.findAll({
+            where:{
+                userId : req.body.id
+            }
+        }).then(respon=>{
+            res.status(200).json({
+                data : respon
+            })
+        }).catch(()=>{
+            res.status(404).json({
+                message : "Jamaah Not Found!"
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message : "Jamaah Not Found!"
         })
     }
 }
