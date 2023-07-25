@@ -69,7 +69,7 @@ export const profile = async(req,res)=>{
                     }
                 }).then(respon=>{
                     res.status(200).json({
-                        data : respon
+                        data : [respon]
                     })
                 }).catch((errs)=>{
                     res.status(404).json({
