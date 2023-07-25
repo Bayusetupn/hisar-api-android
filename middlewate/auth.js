@@ -61,6 +61,9 @@ export const profile = async(req,res)=>{
         }else{
             const profile = jwt.verify(key,process.env.SECRETKEY,async(err,decode)=>{
                 await User.findOne({
+                    attributes:{
+                        exclude:['password']
+                    },
                     where:{
                         id: decode.id
                     }
