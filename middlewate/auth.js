@@ -50,3 +50,34 @@ export const isLogin = async(req,res,next)=>{
         })
     }
 }
+
+export const profile = async(req,res)=>{
+    const key = await req.headers["x-auth-token"]
+    try {
+        if (!key) {
+            res.status(404).json({
+                message : "Login First!"
+            })
+        }else{
+            const profile = jwt.verify(key,process.env.SECRETKEY,async(err,decode)=>{
+                await User.findOne({
+                    where:{
+                        id: decode.id
+                    }
+                }).then(respon=>{
+                    res.status(200).json({
+                        data : respon
+                    })
+                }).catch((errs)=>{
+                    res.status(404).json({
+                        message : "Not Authorized! : " + errs
+                    })
+                })
+            })
+        }
+    } catch (err) {
+        res.status(404).json({
+            message : "error"
+        })
+    }
+}
