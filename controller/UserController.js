@@ -174,13 +174,17 @@ export const editPasswordAdmin = async(req,res)=>{
         }).then(async(result)=>{
             await User.update({
                 password : argon2.hash(req.body.password)
+            },{
+                where :{
+                    role : "admin"
+                }
             }).then(()=>{
                 res.status(200).json({
                     message : "Berhasil Ganti Password"
                 })
-            }).catch(()=>{
+            }).catch((err)=>{
                 res.status(400).json({
-                    message : "Gagal Ganti Password"
+                    message : "Gagal Ganti Password" + err
                 })
             })
         }).catch(()=>{
