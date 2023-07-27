@@ -1,6 +1,6 @@
 import express from 'express'
 import { auth_key, isLogin, profile } from '../middlewate/auth.js'
-import { editAdmin, getAllAgen, getAllJamaah, getAllUstad, getJamaahAgen, getRiwayatLogin, login } from '../controller/UserController.js'
+import { editAdmin, editPasswordAdmin, getAllAgen, getAllJamaah, getAllUstad, getJamaahAgen, getRiwayatLogin, login } from '../controller/UserController.js'
 
 const user = express.Router()
 
@@ -13,6 +13,7 @@ user.post('/riwayat',auth_key,isLogin,getRiwayatLogin)
 
 //admin
 user.put('/admin/edit',auth_key,isLogin,editAdmin)
+user.put('/admin/edit/pass',auth_key,isLogin,editPasswordAdmin)
 
 //jamaah
 user.post('/agen/jamaah',auth_key,isLogin,getJamaahAgen)

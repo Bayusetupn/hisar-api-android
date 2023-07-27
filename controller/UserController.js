@@ -165,6 +165,36 @@ export const editAdmin = async(req,res)=>{
     }
 }
 
+export const editPasswordAdmin = async(req,res)=>{
+    try {
+        await User.findOne({
+            where : {
+                role : "admin"
+            }
+        }).then(async(result)=>{
+            await User.update({
+                password : argon2.hash(req.body.password)
+            }).then(()=>{
+                res.status(200).json({
+                    message : "Berhasil Ganti Password"
+                })
+            }).catch(()=>{
+                res.status(400).json({
+                    message : "Gagal Ganti Password"
+                })
+            })
+        }).catch(()=>{
+            res.status(404).json({
+                message : "Not Found"
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message : "Error " + err
+        })
+    }
+}
+
 export const login = async(req,res)=>{
     try {
         await User.findOne({
