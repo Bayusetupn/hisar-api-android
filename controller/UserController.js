@@ -1,5 +1,6 @@
 import User from '../model/user.js'
 import Jamaah from '../model/Jamaah.js'
+import Riwayat from '../model/loginHistory.js'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
@@ -106,6 +107,24 @@ export const getJamaahAgen = async(req,res)=>{
     } catch (err) {
         res.status(404).json({
             message : "Jamaah Not Found! " + err
+        })
+    }
+}
+
+export const getRiwayatLogin = async(req,res)=>{
+    try {
+        await Riwayat.findAll({
+            where : {
+                userId : req.body.id
+            }
+        }).then(respon=>{
+            res.status(200).json({
+                data : respon
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message : "error"
         })
     }
 }
