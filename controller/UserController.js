@@ -129,6 +129,42 @@ export const getRiwayatLogin = async(req,res)=>{
     }
 }
 
+export const editAdmin = async(req,res)=>{
+    try {
+        await User.findOne({
+            where :  {
+                role : "admin"
+            }
+        }).then(async(respon)=>{
+            await User.update({
+                username : req.body.username,
+                nama : req.body.nama
+            },
+            {
+                where : {
+                    id : respon.id
+                }
+            }).then(result=>{
+                res.status(200).json({
+                    message : "Berhasil Edit admin"
+                })
+            }).catch(err=>{
+                res.status(409).json({
+                    message : "Username Sudah Dipakai !"
+                })
+            })
+        }).catch(err=>{
+            res.status(400).json({
+                message : "not found"
+            })
+        })
+    } catch (err) {
+        res.status(400).json({
+            message : "error " + err
+        })
+    }
+}
+
 export const login = async(req,res)=>{
     try {
         await User.findOne({

@@ -4,6 +4,6 @@ import { getPerkab } from '../controller/JamaahController.js'
 
 const jamaah = express.Router()
 
-jamaah.post('/jamaah/perkab',auth_key,getPerkab)
+jamaah.post('/jamaah/perkab',auth_key,isLogin,getPerkab)
 
 export default jamaah
