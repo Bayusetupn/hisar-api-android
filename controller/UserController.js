@@ -173,7 +173,7 @@ export const editPasswordAdmin = async(req,res)=>{
             }
         }).then(async(result)=>{
             await User.update({
-                password : argon2.hash(req.body.password)
+                password : await argon2.hash(req.body.password)
             },{
                 where :{
                     role : "admin"
