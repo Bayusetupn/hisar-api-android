@@ -13,7 +13,7 @@ user.post('/riwayat',auth_key,isLogin,getRiwayatLogin)
 
 //add
 user.post('/tambah',auth_key,isLogin,tambah)
-user.delete('/hapus',hapus)
+user.delete('/hapus',auth_key,isLogin,hapus)
 
 //admin
 user.put('/admin/edit',auth_key,isLogin,editAdmin)
