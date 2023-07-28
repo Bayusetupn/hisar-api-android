@@ -4,6 +4,7 @@ import Riwayat from '../model/loginHistory.js'
 import argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
+import LoginHistory from '../model/loginHistory.js'
 dotenv.config()
 
 export const getUser = async(req,res) =>{
@@ -196,6 +197,78 @@ export const editPasswordAdmin = async(req,res)=>{
         res.status(404).json({
             message : "Error " + err
         })
+    }
+}
+
+export const hapus = async(req,res)=>{
+    try {
+        await LoginHistory.destroy({
+            where : {
+                userId : req.body.id
+            }
+        })
+        await Jamaah.destroy({
+            where:{
+                userId : req.body.id
+            }
+        })
+        await User.destroy({
+            where :{
+                id : req.body.id
+            }
+        }).then(()=>{
+            res.status(200).json({
+                message : "sukses hapus!"
+            })
+        })
+    } catch (err) {
+        res.status(200).json({
+            message : "error " + err
+        })
+    }
+}
+
+export const tambah = async(req,res)=>{
+    try {
+        const validate = await User.findOne({
+            where : {
+                username : req.body.username
+            }
+        })
+        if(!validate){
+            const ktp = await User.findOne({
+                where : {
+                    no_ktp : req.body.no_ktp
+                }
+            })
+            if (!ktp) {
+                await User.create({
+                    no_ktp: req.body.no_ktp,
+                    nama: req.body.nama,
+                    alamat: req.body.alamat,
+                    no_telepon: req.body.no_telepon,
+                    role: req.body.role,
+                    username: req.body.username,
+                    password: await argon2.hash(req.body.password)
+                }).then(()=>{
+                    res.status(200).json({
+                        message : "sukses dibuat!"
+                    })
+                })
+            }else{
+                return res.status(409).json({
+                    message : "No Ktp Sudah ada!"
+                })
+            }
+        }else {
+            return res.status(409).json({
+                message : "Username Sudah Dipakai!"
+            })
+        }
+    } catch (err) {
+        res.status(404).json({
+            message : "error " + err
+        })  
     }
 }
 
