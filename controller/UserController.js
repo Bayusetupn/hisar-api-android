@@ -284,7 +284,8 @@ export const login = async(req,res)=>{
                 const auth_token =  jwt.sign({id: respon.id},process.env.SECRETKEY,{expiresIn: '1d'})
                 res.status(200).json({
                     status : "succes",
-                    to : auth_token
+                    to : auth_token,
+                    role: respon.role
                 })
             }else{
                 res.status(404).json({
