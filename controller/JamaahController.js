@@ -106,3 +106,46 @@ export const riwayatJadwal = async(req,res)=>{
         })
     }
 }
+
+export const setJadwal = async(req,res)=>{
+    try {
+        await Jamaah.findOne({
+            where: {
+                id: req.body.id
+            }
+        }).then(async(result)=>{
+            await Jamaah.update({
+                berangkat : req.body.dibuat
+            },{
+                where : {
+                    id : result.id
+                }
+            }).then(async()=>{
+                await Riwayat.create({
+                    value : req.body.dibuat,
+                    jamaahId: req.body.id
+                }).then(()=>{
+                    res.status(200).json({
+                        message : "Sukses update jadwal"
+                    })
+                }).catch(()=>{
+                    res.status(400).json({
+                        message : "Gagal update jadwal"
+                    })
+                })
+            }).catch(()=>{
+                res.status(404).json({
+                    message : "Not Found !"
+                })
+            })
+        }).catch(()=>{
+            res.status(404).json({
+                message : "Not Found !"
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message : "err " + err
+        })
+    }
+}
