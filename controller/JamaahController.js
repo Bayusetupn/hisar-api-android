@@ -1,6 +1,7 @@
 import Jamaah from "../model/Jamaah.js";
 import Perkab from "../model/perlengkapan.js"
 import Dokumen from "../model/file.js"
+import Riwayat from "../model/history.js"
 
 export const getPerkab = async(req,res)=>{
     try {
@@ -80,6 +81,28 @@ export const editDp = async(req,res)=>{
     } catch (err) {
         res.status(404).json({
             message : "error"
+        })
+    }
+}
+
+export const riwayatJadwal = async(req,res)=>{
+    try {
+        await Riwayat.findAll({
+            where : {
+                jamaahId : req.body.id
+            }
+        }).then(result=>{
+            res.status(200).json({
+                data : result
+            })
+        }).catch(()=>{
+            res.status(404).json({
+                message : "Not Found"
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message : "error " + err
         })
     }
 }
