@@ -134,7 +134,7 @@ export const editAdmin = async(req,res)=>{
     try {
         await User.findOne({
             where :  {
-                role : "admin"
+                role : req.body.role
             }
         }).then(async(respon)=>{
             await User.update({
@@ -170,14 +170,14 @@ export const editPasswordAdmin = async(req,res)=>{
     try {
         await User.findOne({
             where : {
-                role : "admin"
+                role : req.body.role
             }
         }).then(async(result)=>{
             await User.update({
                 password : await argon2.hash(req.body.password)
             },{
                 where :{
-                    role : "admin"
+                    role : req.body.role
                 }
             }).then(()=>{
                 res.status(200).json({
