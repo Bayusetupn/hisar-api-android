@@ -274,7 +274,7 @@ export const tambah = async(req,res)=>{
 
 export const editAgen = async(req,res)=>{
     try {
-        const validate = await User.findOne({
+        await User.findOne({
             where :  {
                 id : req.body.id
             }
