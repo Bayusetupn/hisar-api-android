@@ -272,6 +272,44 @@ export const tambah = async(req,res)=>{
     }
 }
 
+export const editAgen = async(req,res)=>{
+    try {
+        await User.findOne({
+            where :  {
+                id : req.body.id
+            }
+        }).then(async(respon)=>{
+            await User.update({
+                username : req.body.username,
+                nama : req.body.nama,
+                no_ktp : req.body.no_ktp,
+                alamat : req.body.alamat
+            },
+            {
+                where : {
+                    id : respon.id
+                }
+            }).then(result=>{
+                res.status(200).json({
+                    message : "Berhasil Edit Agen"
+                })
+            }).catch(err=>{
+                res.status(409).json({
+                    message : "Username Sudah Dipakai !"
+                })
+            })
+        }).catch(err=>{
+            res.status(400).json({
+                message : "not found"
+            })
+        })
+    } catch (err) {
+        res.status(400).json({
+            message : "error " + err
+        })
+    }
+}
+
 export const login = async(req,res)=>{
     try {
         await User.findOne({
