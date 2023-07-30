@@ -14,7 +14,7 @@ user.post('/riwayat',auth_key,isLogin,getRiwayatLogin)
 //add
 user.post('/tambah',auth_key,isLogin,tambah)
 user.delete('/hapus',auth_key,isLogin,hapus)
-user.put('/agen/edit',auth_key,editAgen)
+user.put('/agen/edit',auth_key,isLogin,editAgen)
 
 //admin
 user.put('/admin/edit',auth_key,isLogin,editAdmin)
