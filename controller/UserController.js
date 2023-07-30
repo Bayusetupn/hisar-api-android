@@ -274,7 +274,7 @@ export const tambah = async(req,res)=>{
 
 export const editAgen = async(req,res)=>{
     try {
-        await User.findOne({
+        const validate = await User.findOne({
             where :  {
                 id : req.body.id
             }
@@ -291,12 +291,19 @@ export const editAgen = async(req,res)=>{
                 }
             }).then(result=>{
                 res.status(200).json({
-                    message : "Berhasil Edit Agen"
+                    message : "Berhasil Edit"
                 })
-            }).catch(err=>{
-                res.status(409).json({
-                    message : "Username Sudah Dipakai !"
-                })
+            }).catch((errs)=>{
+                if (errs.errors[0].message == "no_ktp must be unique") {
+                    res.status(409).json({
+                        message : "No Ktp Sudah ada!"        
+                    })
+                }else{
+                    res.status(409).json({
+                        message : "Username Sudah Dipakai!"        
+                    })
+                }
+                
             })
         }).catch(err=>{
             res.status(400).json({
