@@ -7,7 +7,7 @@ const jamaah = express.Router()
 jamaah.post('/jamaah/perkab',auth_key,isLogin,getPerkab)
 jamaah.post('/jamaah/doc',auth_key,isLogin,getJamaahDoc)
 jamaah.put('/jamaah/dp',auth_key,isLogin,editDp)
-jamaah.post('/jamaah/jadwal',auth_key,riwayatJadwal)
-jamaah.post('/jamaah/update/jadwal',auth_key,setJadwal)
+jamaah.post('/jamaah/jadwal',auth_key,isLogin,riwayatJadwal)
+jamaah.post('/jamaah/update/jadwal',auth_key,isLogin,setJadwal)
 
 export default jamaah

@@ -317,6 +317,41 @@ export const editAgen = async(req,res)=>{
     }
 }
 
+export const editAgenPassword = async(req,res)=>{
+    try {
+        await User.findOne({
+            where : {
+                id : req.body.id
+            }
+        }).then(async()=>{
+            await User.update({
+                password : await argon2.hash(req.body.password)
+            },
+            {
+                where : {
+                    id : req.body.id
+                }
+            }).then(()=>{
+                res.status(200).json({
+                    message : "Sukses ganti password!"
+                })
+            }).catch(()=>{
+                res.status(400).json({
+                    message : "Gagal ganti password!"
+                })
+            })
+        }).catch(()=>{
+            res.status(404).json({
+                message : "Not Found!"
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message : "err " + err
+        })
+    }
+}
+
 export const login = async(req,res)=>{
     try {
         await User.findOne({
