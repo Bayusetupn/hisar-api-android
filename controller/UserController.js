@@ -113,7 +113,7 @@ export const getJamaahAgen = async(req,res)=>{
 }
 
 export const keyToId = async(req,res)=>{
-    const key = req.body.key
+    const key = req.body.id
     try {
         jwt.verify(key,process.env.SECRETKEY,(err,decode)=>{
             res.status(200).json({
