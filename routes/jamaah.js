@@ -9,6 +9,6 @@ jamaah.post('/jamaah/doc',auth_key,isLogin,getJamaahDoc)
 jamaah.put('/jamaah/dp',auth_key,isLogin,editDp)
 jamaah.post('/jamaah/jadwal',auth_key,isLogin,riwayatJadwal)
 jamaah.post('/jamaah/update/jadwal',auth_key,isLogin,setJadwal)
-jamaah.post('/jamaah/tambah',auth_key,addJamaah)
+jamaah.post('/jamaah/tambah',auth_key,isLogin,addJamaah)
 
 export default jamaah
