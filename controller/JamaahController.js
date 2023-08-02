@@ -47,6 +47,35 @@ export const getJamaahDoc = async(req,res)=>{
     }
 }
 
+export const addJamaah = async(req,res)=>{
+    try {
+        await Jamaah.create({
+            ktp : req.body.ktp,
+            nama : req.body.nama,
+            daftarkan: req.body.daftarkan,
+            jenis_kelamin:req.body.kelamin,
+            no_telepon:req.body.telp,
+            alamat: req.body.alamat,
+            dp:false,
+            paket: req.body.paket,
+            userId: req.body.id
+
+        }).then(()=>{
+            res.status(200).json({
+                message : "Sukses Tambah Jamaah!"
+            })
+        }).catch((er)=>{
+            res.status(400).json({
+                message : "Gagal Tambah Jamaah! " + er
+            })
+        })
+    } catch (err) {
+        res.status(400).json({
+            message : "Gagal Tambah Jamaah! " + err
+        })
+    }
+}
+
 export const editDp = async(req,res)=>{
     try {
         await Jamaah.findOne({
