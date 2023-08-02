@@ -2,6 +2,7 @@ import Jamaah from "../model/Jamaah.js";
 import Perkab from "../model/perlengkapan.js"
 import Dokumen from "../model/file.js"
 import Riwayat from "../model/history.js"
+import User from "../model/user.js";
 
 export const getPerkab = async(req,res)=>{
     try {
@@ -49,26 +50,44 @@ export const getJamaahDoc = async(req,res)=>{
 
 export const addJamaah = async(req,res)=>{
     try {
-        await Jamaah.create({
-            ktp : req.body.ktp,
-            nama : req.body.nama,
-            daftarkan: req.body.daftarkan,
-            jenis_kelamin:req.body.kelamin,
-            no_telepon:req.body.telp,
-            alamat: req.body.alamat,
-            dp:false,
-            paket: req.body.paket,
-            userId: req.body.id
-
-        }).then(()=>{
-            res.status(200).json({
-                message : "Sukses Tambah Jamaah!"
+        await User.findOne({
+            where : {
+                id: req.body.id
+            }
+        }).then(async(result)=>{
+            await Jamaah.create({
+                ktp : req.body.ktp,
+                nama : req.body.nama,
+                daftarkan: result.nama,
+                jenis_kelamin:req.body.kelamin,
+                no_telepon:req.body.telp,
+                alamat: req.body.alamat,
+                dp:false,
+                paket: req.body.paket,
+                userId: req.body.id
+    
+            }).then(async(response)=>{
+                Perkab.create({
+                    jamaahId: response.id
+                })
+                Dokumen.create({
+                    jamaahId: response.id
+                }).then(()=>{
+                    res.status(200).json({
+                        message : "Sukses"
+                    })
+                })
+            }).catch((er)=>{
+                res.status(400).json({
+                    message : "Gagal Tambah Jamaah! " + er
+                })
             })
-        }).catch((er)=>{
-            res.status(400).json({
-                message : "Gagal Tambah Jamaah! " + er
+        }).catch(()=>{
+            res.status(404).json({
+                message : "user not found!"
             })
         })
+        
     } catch (err) {
         res.status(400).json({
             message : "Gagal Tambah Jamaah! " + err
