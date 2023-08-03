@@ -55,6 +55,9 @@ export const addJamaah = async(req,res)=>{
                 id: req.body.id
             }
         }).then(async(result)=>{
+            await User.update({
+                total_jamaah : Sequelize.literal('total_jamaah + 1')
+            })
             await Jamaah.create({
                 ktp : req.body.ktp,
                 nama : req.body.nama,
@@ -91,6 +94,56 @@ export const addJamaah = async(req,res)=>{
     } catch (err) {
         res.status(400).json({
             message : "Gagal Tambah Jamaah! " + err
+        })
+    }
+}
+
+export const deleteJamaah = async(req,res)=>{
+    try {
+        await Perkab.destroy({
+            where : {
+                jamaahId : req.body.id
+            }
+        }).then(async()=>{
+            await Dokumen.destroy({
+                where : {
+                    jamaahId : res.body.id
+                }
+            }).then(async()=>{
+                await Jamaah.destroy({
+                    where : {
+                        id : req.body.id
+                    }
+                }).then(async()=>{
+                    await User.findOne({
+                        where : {
+                            id: req.body.userId
+                        }
+                    }).then((result)=>{
+                        result.decrement('total_jamaah',{by: 1}).then(()=>{
+                            res.status(200).json({
+                                message : "Sukses Hapus Jamaah"
+                            })
+                        })
+                    })
+                }).catch(errs=>{
+                    res.status(200).json({
+                        message : errs
+                    })
+                })
+            }).catch(errs=>{
+                res.status(200).json({
+                    message : errs
+                })
+            })
+        }).catch(()=>{
+            res.status(400).json({
+                message : "Gagal Hapus Jamaah"
+            })
+        })
+    } catch (err) {
+        res.status(400).json({
+            message : "Gagal Hapus Jamaah " + err
         })
     }
 }
