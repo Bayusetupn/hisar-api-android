@@ -3,6 +3,7 @@ import Perkab from "../model/perlengkapan.js"
 import Dokumen from "../model/file.js"
 import Riwayat from "../model/history.js"
 import User from "../model/user.js";
+import { where } from "sequelize";
 
 export const getPerkab = async(req,res)=>{
     try {
@@ -247,6 +248,48 @@ export const setJadwal = async(req,res)=>{
     } catch (err) {
         res.status(404).json({
             message : "err " + err
+        })
+    }
+}
+
+export const editPerkab = async(req,res)=>{
+    try {
+        await Perkab.findOne({
+            where : {
+                jamaahId : req.body.id
+            }
+        }).then(async(result)=>{
+            await Perkab.update({
+                booklet_peta : req.body.booklet_peta,
+                koper_dll : req.body.koper_dll,
+                kain_batik : req.body.kain_batik,
+                syal : req.body.syal,
+                mukena : req.body.mukena,
+                buku_panduan : req.body.buku_panduan,
+                kain_ihram : req.body.kain_ihram,
+                buku_doa : req.body.buku_doa,
+                booklet_sholawat : req.body.booklet_sholawat
+            },{
+                where : {
+                    id : result.id
+                }
+            }).then(()=>{
+                res.status(200).json({
+                    message : "Sukses Update Perkab"
+                })
+            }).catch((errs)=>{
+                res.status(404).json({
+                    message  :"Error Update Perkab " + errs
+                })
+            })
+        }).catch(err=>{
+            res.status(404).json({
+                message  :"Perkab Not Found " + err
+            })
+        })
+    } catch (err) {
+        res.status(404).json({
+            message  :"Perkab Not Found " + err
         })
     }
 }
