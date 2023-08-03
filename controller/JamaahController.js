@@ -136,9 +136,9 @@ export const deleteJamaah = async(req,res)=>{
                     message : errs
                 })
             })
-        }).catch(()=>{
+        }).catch((errr)=>{
             res.status(400).json({
-                message : "Gagal Hapus Jamaah"
+                message : "Gagal Hapus Jamaah " + errr
             })
         })
     } catch (err) {
