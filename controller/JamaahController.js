@@ -107,7 +107,7 @@ export const deleteJamaah = async(req,res)=>{
         }).then(async()=>{
             await Dokumen.destroy({
                 where : {
-                    jamaahId : res.body.id
+                    jamaahId : req.body.id
                 }
             }).then(async()=>{
                 await Jamaah.destroy({
