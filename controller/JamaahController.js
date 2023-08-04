@@ -311,6 +311,10 @@ export const editJamaah = async(req,res)=>{
             res.status(404).json({
                 message : "Gagal Update Jamaah " +err
             })
+        }).then(()=>{
+            res.message(200).json({
+                message : "Sukses Edit Jamaah"
+            })
         })
     } catch (err) {
         res.status(400).json({
