@@ -293,3 +293,28 @@ export const editPerkab = async(req,res)=>{
         })
     }
 }
+
+export const editJamaah = async(req,res)=>{
+    try {
+        await Jamaah.update({
+            ktp: req.body.ktp,
+            nama:req.body.nama,
+            jenis_kelamin : req.body.kelamin,
+            no_telepon : req.body.telp,
+            alamat:req.body.alamat,
+            paket : req.body.paket
+        },{
+            where : {
+                id: req.body.id
+            }
+        }).catch(err=>{
+            res.status(404).json({
+                message : "Gagal Update Jamaah " +err
+            })
+        })
+    } catch (err) {
+        res.status(400).json({
+            message : "error " + err
+        })
+    }
+}
